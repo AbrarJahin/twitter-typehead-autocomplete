@@ -37,11 +37,11 @@ var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
 	'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
 ];
  
-$('#the-basics .typeahead').typeahead(
+$('#typehead_example').typeahead(
 						{
 							hint: true,
 							highlight: true,
-							minLength: 1
+							minLength: 2
 						},
 						{
 							name: 'states',

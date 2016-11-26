@@ -2,6 +2,8 @@ var substringMatcher = function(strs)
 {
 	return function findMatches(q, cb)
 	{
+		//alert(q);
+
 		var matches, substrRegex;
 
 		// an array that will be populated with substring matches
@@ -48,4 +50,12 @@ $('#typehead_example').typeahead(
 							displayKey:	'value',
 							source:		substringMatcher(states)
 						}
-					);
+					)
+					.on('typeahead:asyncrequest', function()
+					{
+						alert("AJAX Start");
+					})
+					.on('typeahead:asynccancel typeahead:asyncreceive', function()
+					{
+						alert("AJAX End");
+					});

@@ -36,7 +36,7 @@ var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
 	'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
 	'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
 ];
- 
+
 $('#typehead_example').typeahead(
 						{
 							hint:		true,

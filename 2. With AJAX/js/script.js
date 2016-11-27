@@ -1,73 +1,41 @@
-/*
-jQuery(document).ready(function($)
-{
-	// Set the Options for "Bloodhound" suggestion engine
-	var engine = new Bloodhound({
-			remote: {
-					url: '/find?search_param=%QUERY%',
-					wildcard: '%QUERY%'
-			},
-			datumTokenizer: Bloodhound.tokenizers.whitespace('search_param'),
-			queryTokenizer: Bloodhound.tokenizers.whitespace
-	});
-
-	$('#typehead_example').typeahead({
-				hint: true,
-				highlight: true,
-				minLength: 1
-			},
-	{
-		source: engine.ttAdapter(),
-
-		// This will be appended to "tt-dataset-" to form the class name of the suggestion menu.
-		name: 'usersList',
-
-		// the key from the array we want to display (name,id,email,etc...)
-		templates: {
-					empty: [
-							'<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-						],
-					header: [
-							'<div class="list-group search-results-dropdown">'
-						],
-					suggestion: function (data)
-						{
-							return '<a href="' + data.profile.username + '" class="list-group-item">' + data.name + '- @' + data.profile.username + '</a>'
-						}
-				}
-	})
-	.on('typeahead:asyncrequest', function()
-	{
-		alert("AJAX Start");
-	})
-	.on('typeahead:asynccancel typeahead:asyncreceive', function()
-	{
-		alert("AJAX End");
-	});
-});
-*/
-
 $(document).ready(function()
 {
-	$.support.cors = true;
-
 	var engine = new Bloodhound({
-		identify:	function(o)
-					{
-						return o.id_str;
-					},
-		queryTokenizer: Bloodhound.tokenizers.whitespace,
-		datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name', 'screen_name'),
-		dupDetector:	function(a, b)
+		identify	:	function(options)
 						{
-							return a.id_str === b.id_str;
+							return options.id_str;
 						},
+		queryTokenizer	:	Bloodhound.tokenizers.whitespace,
+		datumTokenizer	:	Bloodhound.tokenizers.obj.whitespace('name', 'screen_name'),
+		dupDetector		:	function(a, b)
+							{
+								return a.id_str === b.id_str;
+							},
 
-		prefetch: 'https://typeahead-js-twitter-api-proxy.herokuapp.com' + '/demo/prefetch',
+		//prefetch		:	'https://typeahead-js-twitter-api-proxy.herokuapp.com/demo/prefetch',
 
 		remote: {
-			url: 'https://typeahead-js-twitter-api-proxy.herokuapp.com' + '/demo/search?q=%QUERY',
-			wildcard: '%QUERY'
+			/*
+			url			:	'https://typeahead-js-twitter-api-proxy.herokuapp.com/demo/search?q=%QUERY',
+			wildcard	:	'%QUERY'
+			*/
+			url			:	'data.php'+'#%QUERY',
+			wildcard	:	'%QUERY',
+			transport: function (opts, onSuccess, onError)
+			{
+				$.ajax({
+					url: opts.url.split("#")[0],
+					data:
+						{
+							search_string	:	opts.url.split("#")[1],
+							other_data		:	"demo data"
+						},
+					type: "POST",
+					dataType: "json",
+					success: onSuccess,
+					error: onError
+				})
+			}
 		}
 	});
 
@@ -78,10 +46,9 @@ $(document).ready(function()
 	{
 		if (query_string === '')
 		{
-			sync(engine.get('1090217586', '58502284', '10273252', '24477185'));
+			//sync(engine.get('1090217586', '58502284', '10273252', '24477185'));
 			async([]);
 		}
-
 		else
 		{
 			engine.search(query_string, sync, async);
@@ -95,19 +62,19 @@ $(document).ready(function()
 			},
 			{
 				source: engineWithDefaults,
-				displayKey:	'screen_name',
+				displayKey:	'name',
 				templates:	{
-							empty: [
-									'<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
-								],
-							header: [
-									'<div class="list-group search-results-dropdown">'
-								],
-							suggestion: function (data)
-								{
-									return '<a href="' + data.created_at + '" class="list-group-item">' + data.name + '- @' + data.status.created_at + '</a>'
-								}
-						}
+								empty: [
+										'<div class="list-group search-results-dropdown"><div class="list-group-item">Nothing found.</div></div>'
+									],
+								header: [
+										'<div class="list-group search-results-dropdown">'
+									]/*,
+								suggestion: function (data)
+									{
+										return '<a href="#" class="list-group-item">' + data.name + '- @' + data.price + '</a>';
+									}*/
+							}
 			})
 			.on('typeahead:asyncrequest', function()
 			{
@@ -116,5 +83,9 @@ $(document).ready(function()
 			.on('typeahead:asynccancel typeahead:asyncreceive', function()
 			{
 				$('.typeahead-spinner').hide();
+			})
+			.bind('typeahead:select', function (event, suggestion)
+			{
+				console.log(suggestion);
 			});
 });

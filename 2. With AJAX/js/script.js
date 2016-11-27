@@ -62,7 +62,9 @@ $(document).ready(function()
 						{
 							return a.id_str === b.id_str;
 						},
-		//prefetch: 'https://typeahead-js-twitter-api-proxy.herokuapp.com' + '/demo/prefetch',
+
+		prefetch: 'https://typeahead-js-twitter-api-proxy.herokuapp.com' + '/demo/prefetch',
+
 		remote: {
 			url: 'https://typeahead-js-twitter-api-proxy.herokuapp.com' + '/demo/search?q=%QUERY',
 			wildcard: '%QUERY'
@@ -89,15 +91,7 @@ $(document).ready(function()
 	$('#typehead_example').typeahead({
 				hint:		true,
 				highlight:	true,
-				//menu: $('.typeahead-menu'),
-				minLength: 0,
-				classNames:	{
-					//open: 'is-open',
-					//empty: 'is-empty',
-					//cursor: 'is-active',
-					//suggestion: 'typeahead-suggestion',
-					//selectable: 'typeahead-selectable'
-				}
+				minLength: 0
 			},
 			{
 				source: engineWithDefaults,

@@ -78,11 +78,13 @@ $(document).ready(function()
 			})
 			.on('typeahead:asyncrequest', function()
 			{
-				$('.typeahead-spinner').show();
+				//$('#typehead_example').addClass('typeahead-spinner');
+				$(this).addClass('typeahead-spinner');
 			})
 			.on('typeahead:asynccancel typeahead:asyncreceive', function()
 			{
-				$('.typeahead-spinner').hide();
+				//$('#typehead_example').removeClass('typeahead-spinner');
+				$(this).removeClass('typeahead-spinner');
 			})
 			.bind('typeahead:select', function (event, suggestion)
 			{

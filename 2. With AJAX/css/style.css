@@ -153,3 +153,7 @@ p + p {
 #rtl-support .tt-menu {
 	text-align: right;
 }
+
+.typeahead-spinner {
+    background:url('http://www.hsi.com.hk/HSI-Net/pages/images/en/share/ajax-loader.gif') no-repeat right center;
+}
